@@ -20,7 +20,7 @@ namespace Services
 
         public void AddMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            _dbInMemory.Movies.Add(movie);
         }
 
         public void DeleteMovie(string title)
