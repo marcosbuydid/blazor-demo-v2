@@ -30,7 +30,7 @@ namespace Services
 
         public List<Movie> GetMovies()
         {
-            return _dbInMemory.GetAll();
+            return _dbInMemory.Movies;
         }
 
         public Movie SearchMovieByTitle(string title)
