@@ -20,6 +20,17 @@ namespace Services
 
         public void AddMovie(Movie movie)
         {
+            if (String.IsNullOrEmpty(movie.Title))
+            {
+                throw new ArgumentException("Movie title cannot be empty or null");
+            }
+            if (String.IsNullOrEmpty(movie.Director))
+            {
+                throw new ArgumentException("Movie director cannot be empty or null");
+            }
+
+            ValidateUniqueTitle(movie.Title);
+
             _dbInMemory.Movies.Add(movie);
         }
 
@@ -34,9 +45,17 @@ namespace Services
             return _dbInMemory.Movies;
         }
 
-        public void UpdateMovie(Movie movie)
+        public void UpdateMovie(Movie movieToUpdate)
         {
-            throw new NotImplementedException();
+            Movie? movie = _dbInMemory.Movies.Find(m => m.Title == movieToUpdate.Title);
+            var movieToUpdateIndex = _dbInMemory.Movies.IndexOf(movie);
+
+            if (String.IsNullOrEmpty(movieToUpdate.Director))
+            {
+                throw new ArgumentException("Movie director cannot be empty or null");
+            }
+
+            _dbInMemory.Movies[movieToUpdateIndex] = movieToUpdate;
         }
 
         public Movie GetMovie(string title)
@@ -47,6 +66,17 @@ namespace Services
                 throw new ArgumentException("Cannot find movie with this title");
             }
             return movie;
+        }
+
+        private void ValidateUniqueTitle(String title)
+        {
+            foreach (var movie in _dbInMemory.Movies)
+            {
+                if (movie.Title == title)
+                {
+                    throw new ArgumentException("There`s a movie already defined with that title");
+                }
+            }
         }
     }
 }
