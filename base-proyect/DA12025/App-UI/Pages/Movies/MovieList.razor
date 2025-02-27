@@ -24,8 +24,8 @@
                 <td>@movie.Title</td>
                 <td>@movie.Director</td>
                 <td>@movie.ReleaseDate.Year/@movie.ReleaseDate.Month/@movie.ReleaseDate.Day</td>
-                <td><button type="button" class="btn btn-secondary" @onclick="() => OnUpdate(movie.Title)">Update</button></td>
-                <td><button type="button" class="btn btn-danger" @onclick="() => OnDelete(movie.Title)">Delete</button></td>
+                <td><button type="button" class="btn btn-primary" @onclick="() => OnUpdate(movie.Title)">Update</button></td>
+                <td><button type="button" class="btn btn-secondary" @onclick="() => OnDelete(movie.Title)">Delete</button></td>
             </tr>
         }
     </tbody>

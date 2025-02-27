@@ -1,11 +1,11 @@
-﻿@page "/create-movie"
+﻿@page "/add-movie"
 @using Services
 @using Services.Models
 
 @inject MovieService MovieService
 @inject NavigationManager NavigationManager
 
-<h1>Create Movie</h1>
+<h1>Add Movie</h1>
 
 <body>
     <form>
@@ -46,5 +46,4 @@
     {
         NavigationManager.NavigateTo("/");
     }
-
 }
