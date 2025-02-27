@@ -30,7 +30,7 @@ namespace Services
 
         public List<Movie> GetMovies()
         {
-            throw new NotImplementedException();
+            return _dbInMemory.GetAll();
         }
 
         public Movie SearchMovieByTitle(string title)
