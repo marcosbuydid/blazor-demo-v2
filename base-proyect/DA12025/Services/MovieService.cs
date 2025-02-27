@@ -25,7 +25,8 @@ namespace Services
 
         public void DeleteMovie(string title)
         {
-            throw new NotImplementedException();
+            Movie movieToDelete = GetMovie(title);
+            _dbInMemory.Movies.Remove(movieToDelete);
         }
 
         public List<Movie> GetMovies()
@@ -33,14 +34,19 @@ namespace Services
             return _dbInMemory.Movies;
         }
 
-        public Movie SearchMovieByTitle(string title)
+        public void UpdateMovie(Movie movie)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateMovie(Movie movie)
+        public Movie GetMovie(string title)
         {
-            throw new NotImplementedException();
+            Movie? movie = _dbInMemory.Movies.FirstOrDefault(movie => movie.Title == title);
+            if (movie == null)
+            {
+                throw new ArgumentException("Cannot find movie with this title");
+            }
+            return movie;
         }
     }
 }

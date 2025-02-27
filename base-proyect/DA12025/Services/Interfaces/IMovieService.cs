@@ -11,8 +11,8 @@ namespace Services.Interfaces
     {
         List<Movie> GetMovies();
         void AddMovie(Movie movie);
-        void DeleteMovie(String title);
+        void DeleteMovie(string title);
         void UpdateMovie(Movie movie);
-        Movie SearchMovieByTitle(String title);
+        Movie GetMovie(string title);
     }
 }

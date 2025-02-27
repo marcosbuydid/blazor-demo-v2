@@ -3,6 +3,7 @@
 @using Services.Models
 
 @inject MovieService MovieService
+@inject NavigationManager NavigationManager
 
 <h1>MovieList</h1>
 
@@ -24,7 +25,7 @@
                 <td>@movie.Director</td>
                 <td>@movie.ReleaseDate.Year/@movie.ReleaseDate.Month/@movie.ReleaseDate.Day</td>
                 <td><button type="button" class="btn btn-primary">Edit</button></td>
-                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                <td><button type="button" class="btn btn-danger" @onclick="() => OnDelete(movie.Title)">Delete</button></td>
             </tr>
         }
     </tbody>
@@ -32,10 +33,17 @@
 
 @code {
     private List<Movie> movies;
+    private string? selectedMovieTitle;
 
     protected override void OnInitialized()
     {
         movies = MovieService.GetMovies();
+        selectedMovieTitle = "";
     }
 
+    private void OnDelete(String title)
+    {
+        MovieService.DeleteMovie(title);
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+    }
 }
