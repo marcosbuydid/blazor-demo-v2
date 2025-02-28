@@ -10,23 +10,25 @@
 <h1>Update Movie</h1>
 
 <body>
-    <form>
+    <EditForm Model="@movie" OnValidSubmit="@(_ => OnUpdate(movie))">
+        <DataAnnotationsValidator />
         <div class="form-group">
             <label for="title">Títle</label>
-            <input type="text" class="form-control" id="title" @bind="movieToUpdate.Title" disabled />
+            <input type="text" class="form-control" id="title" @bind="movie.Title" disabled />
+            <ValidationMessage For="@(() => movie.Title)" />
         </div>
         <div class="form-group">
             <label for="director">Director</label>
-            <input type="text" class="form-control" id="director" @bind="movieToUpdate.Director" />
+            <input type="text" class="form-control" id="director" @bind="movie.Director" />
+            <ValidationMessage For="@(() => movie.Director)" />
         </div>
         <div class="form-group">
             <label for="releaseDate">Release Date</label>
-            <input type="date" id="movie-releaseDate" name="movie-releaseDate" @bind="movieToUpdate.ReleaseDate" />
+            <input type="date" id="movie-releaseDate" name="movie-releaseDate" @bind="movie.ReleaseDate" />
         </div>
-    </form>
-
-    <button type="button" class="btn btn-primary" @onclick="() => OnUpdate(movieToUpdate)">Update</button>
-    <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancel</button>
+    </EditForm>
 
 </body>
 
@@ -35,21 +37,31 @@
     [Parameter]
     public string movieTitle { get; set; }
 
-    private Movie movieToUpdate;
+    private Movie movie;
+
+    //used to store original values if cancel
+    //button is pressed.
+    private string director;
+    private DateTime releaseDate;
 
     protected override void OnInitialized()
     {
-        movieToUpdate = MovieService.GetMovie(movieTitle);
+        movie = MovieService.GetMovie(movieTitle);
+        director = movie.Director;
+        releaseDate = movie.ReleaseDate;
     }
 
-    private void OnUpdate(Movie movieToUpdate)
+    private void OnUpdate(Movie movie)
     {
-        MovieService.UpdateMovie(movieToUpdate);
+        MovieService.UpdateMovie(movie);
         NavigationManager.NavigateTo("/movies");
     }
 
     private void OnCancel()
     {
+        movie.Director = director;
+        movie.ReleaseDate = releaseDate;
+
         NavigationManager.NavigateTo("/movies");
     }
 }
