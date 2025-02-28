@@ -20,15 +20,6 @@ namespace Services
 
         public void AddMovie(Movie movie)
         {
-            if (String.IsNullOrEmpty(movie.Title))
-            {
-                throw new ArgumentException("Movie title cannot be empty or null");
-            }
-            if (String.IsNullOrEmpty(movie.Director))
-            {
-                throw new ArgumentException("Movie director cannot be empty or null");
-            }
-
             ValidateUniqueTitle(movie.Title);
 
             _dbInMemory.Movies.Add(movie);
@@ -49,11 +40,6 @@ namespace Services
         {
             Movie? movie = _dbInMemory.Movies.Find(m => m.Title == movieToUpdate.Title);
             var movieToUpdateIndex = _dbInMemory.Movies.IndexOf(movie);
-
-            if (String.IsNullOrEmpty(movieToUpdate.Director))
-            {
-                throw new ArgumentException("Movie director cannot be empty or null");
-            }
 
             _dbInMemory.Movies[movieToUpdateIndex] = movieToUpdate;
         }
