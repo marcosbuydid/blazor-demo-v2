@@ -8,21 +8,21 @@
 <h1>Add Movie</h1>
 
 <body>
-    <EditForm Model="@movie" OnValidSubmit="OnSubmit">
+    <EditForm Model="@movieDTO" OnValidSubmit="OnSubmit">
         <DataAnnotationsValidator />
         <div class="form-group">
             <label for="title">Títle</label>
-            <input type="text" class="form-control" id="title" @bind="movie.Title" />
-            <ValidationMessage For="@(() => movie.Title)" />
+            <input type="text" class="form-control" id="title" @bind="movieDTO.Title" />
+            <ValidationMessage For="@(() => movieDTO.Title)" />
         </div>
         <div class="form-group">
             <label for="director">Director</label>
-            <input type="text" class="form-control" id="director" @bind="movie.Director" />
-            <ValidationMessage For="@(() => movie.Director)" />
+            <input type="text" class="form-control" id="director" @bind="movieDTO.Director" />
+            <ValidationMessage For="@(() => movieDTO.Director)" />
         </div>
         <div class="form-group">
             <label for="releaseDate">Release Date</label>
-            <input type="date" id="movie-releaseDate" name="movie-releaseDate" @bind="movie.ReleaseDate" />
+            <input type="date" id="movie-releaseDate" name="movie-releaseDate" @bind="movieDTO.ReleaseDate" />
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
         <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancel</button>
@@ -31,16 +31,20 @@
 </body>
 
 @code {
-    private Movie movie;
+    private MovieDTO movieDTO;
 
     protected override void OnInitialized()
     {
-        movie = new Movie("", "", DateTime.Now);
+        movieDTO = new MovieDTO();
+        movieDTO.Title = "";
+        movieDTO.Director = "";
+        movieDTO.ReleaseDate = DateTime.Now;
+        movieDTO.Budget = 0;
     }
 
     private void OnSubmit()
     {
-        MovieService.AddMovie(movie);
+        MovieService.AddMovie(movieDTO);
         NavigationManager.NavigateTo("/movies");
     }
 

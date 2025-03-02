@@ -9,10 +9,10 @@ namespace Services.Interfaces
 {
     public interface IMovieService
     {
-        List<Movie> GetMovies();
-        void AddMovie(Movie movie);
+        List<MovieDTO> GetMovies();
+        void AddMovie(MovieDTO movie);
         void DeleteMovie(string title);
-        void UpdateMovie(Movie movie);
-        Movie GetMovie(string title);
+        void UpdateMovie(MovieDTO movie);
+        MovieDTO GetMovie(string title);
     }
 }

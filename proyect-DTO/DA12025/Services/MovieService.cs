@@ -1,4 +1,5 @@
-﻿using Services.DataAccess;
+﻿using Domain;
+using Services.DataAccess;
 using Services.Interfaces;
 using Services.Models;
 using System;
@@ -18,40 +19,48 @@ namespace Services
             _dbInMemory = dbInMemory;
         }
 
-        public void AddMovie(Movie movie)
+        public void AddMovie(MovieDTO movie)
         {
             ValidateUniqueTitle(movie.Title);
 
-            _dbInMemory.Movies.Add(movie);
+            _dbInMemory.Movies.Add(movie.ToEntity());
         }
 
         public void DeleteMovie(string title)
         {
-            Movie movieToDelete = GetMovie(title);
-            _dbInMemory.Movies.Remove(movieToDelete);
+            MovieDTO movieToDelete = GetMovie(title);
+            Movie? movie = _dbInMemory.Movies.Find(m => m.Title == movieToDelete.Title);
+            _dbInMemory.Movies.Remove(movie);
         }
 
-        public List<Movie> GetMovies()
+        public List<MovieDTO> GetMovies()
         {
-            return _dbInMemory.Movies;
+            List<MovieDTO> moviesDTO = new List<MovieDTO>();
+
+            foreach (var movie in _dbInMemory.Movies)
+            {
+                moviesDTO.Add(MovieDTO.FromEntity(movie));
+            }
+            return moviesDTO;
+
         }
 
-        public void UpdateMovie(Movie movieToUpdate)
+        public void UpdateMovie(MovieDTO movieToUpdate)
         {
             Movie? movie = _dbInMemory.Movies.Find(m => m.Title == movieToUpdate.Title);
             var movieToUpdateIndex = _dbInMemory.Movies.IndexOf(movie);
 
-            _dbInMemory.Movies[movieToUpdateIndex] = movieToUpdate;
+            _dbInMemory.Movies[movieToUpdateIndex] = movieToUpdate.ToEntity();
         }
 
-        public Movie GetMovie(string title)
+        public MovieDTO GetMovie(string title)
         {
             Movie? movie = _dbInMemory.Movies.FirstOrDefault(movie => movie.Title == title);
             if (movie == null)
             {
                 throw new ArgumentException("Cannot find movie with this title");
             }
-            return movie;
+            return MovieDTO.FromEntity(movie);
         }
 
         private void ValidateUniqueTitle(String title)
