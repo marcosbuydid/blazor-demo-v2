@@ -4,6 +4,7 @@ using Services.Interfaces;
 using Services.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace Services
         {
             ValidateUniqueTitle(movie.Title);
 
-            _dbInMemory.Movies.Add(movie.ToEntity());
+            _dbInMemory.Movies.Add(ToEntity(movie));
         }
 
         public void DeleteMovie(string title)
@@ -39,7 +40,7 @@ namespace Services
 
             foreach (var movie in _dbInMemory.Movies)
             {
-                moviesDTO.Add(MovieDTO.FromEntity(movie));
+                moviesDTO.Add(FromEntity(movie));
             }
             return moviesDTO;
 
@@ -50,7 +51,7 @@ namespace Services
             Movie? movie = _dbInMemory.Movies.Find(m => m.Title == movieToUpdate.Title);
             var movieToUpdateIndex = _dbInMemory.Movies.IndexOf(movie);
 
-            _dbInMemory.Movies[movieToUpdateIndex] = movieToUpdate.ToEntity();
+            _dbInMemory.Movies[movieToUpdateIndex] = ToEntity(movieToUpdate);
         }
 
         public MovieDTO GetMovie(string title)
@@ -60,7 +61,7 @@ namespace Services
             {
                 throw new ArgumentException("Cannot find movie with this title");
             }
-            return MovieDTO.FromEntity(movie);
+            return FromEntity(movie);
         }
 
         private void ValidateUniqueTitle(String title)
@@ -72,6 +73,21 @@ namespace Services
                     throw new ArgumentException("There`s a movie already defined with that title");
                 }
             }
+        }
+
+        private Movie ToEntity(MovieDTO movieDTO)
+        {
+            return new Movie(movieDTO.Title, movieDTO.Director, movieDTO.ReleaseDate, movieDTO.Budget){};
+        }
+
+        private static MovieDTO FromEntity(Movie movie)
+        {
+            return new MovieDTO()
+            {
+                Title = movie.Title,
+                Director = movie.Director,
+                ReleaseDate = movie.ReleaseDate,
+            };
         }
     }
 }
