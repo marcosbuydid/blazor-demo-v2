@@ -17,26 +17,5 @@ namespace Services.Models
         public DateTime ReleaseDate { get; set; }
         [Required(ErrorMessage = "Budget is required.")]
         public int Budget { get; set; }
-
-        public Movie ToEntity()
-        {
-            return new Movie(Title, Director, ReleaseDate, Budget)
-            {
-                Title = Title,
-                Director = Director,
-                ReleaseDate = ReleaseDate,
-                Budget = Budget
-            };
-        }
-
-        public static MovieDTO FromEntity(Movie movie)
-        {
-            return new MovieDTO()
-            {
-                Title = movie.Title,
-                Director = movie.Director,
-                ReleaseDate = movie.ReleaseDate,
-            };
-        }
     }
 }
