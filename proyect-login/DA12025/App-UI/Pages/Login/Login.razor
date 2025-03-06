@@ -1,0 +1,64 @@
+﻿@page "/login"
+@using Services
+@using Services.Models
+
+@inject SessionService SessionService
+@inject NavigationManager NavigationManager
+
+<h3>Login</h3>
+
+@if (alertVisible)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@alertMessage</strong>
+        <button type="button" class="btn-close" aria-label="Close" @onclick="ToggleAlertVisibility"></button>
+    </div>
+}
+
+<EditForm Model="@userLoginDTO" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <InputText id="email" @bind-Value="userLoginDTO.Email" class="form-control" />
+        <ValidationMessage For="@(() => userLoginDTO.Email)" />
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <InputText id="password" @bind-Value="userLoginDTO.Password" type="password" class="form-control" />
+        <ValidationMessage For="@(() => userLoginDTO.Password)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-4">Login</button>
+</EditForm>
+
+@code {
+    private UserLoginDTO userLoginDTO;
+    private bool alertVisible = false;
+    private string alertMessage = "";
+
+    protected override void OnInitialized()
+    {
+        userLoginDTO = new UserLoginDTO("", "");
+    }
+
+    private void HandleLogin()
+    {
+        try
+        {
+            SessionService.Login(userLoginDTO.Email, userLoginDTO.Password);
+            NavigationManager.NavigateTo("/");
+        }
+        catch(ArgumentException e)
+        {
+            alertVisible = true;
+            alertMessage = e.Message;
+        }
+
+    }
+
+    private void ToggleAlertVisibility()
+    {
+        alertVisible = !alertVisible;
+    }
+}

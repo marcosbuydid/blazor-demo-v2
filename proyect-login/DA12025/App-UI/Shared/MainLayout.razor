@@ -1,11 +1,18 @@
-﻿@inherits LayoutComponentBase
+﻿@using Services
+@using Services.Models
+@inherits LayoutComponentBase
+
+@inject SessionService SessionService
 
 <PageTitle>App-UI</PageTitle>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+    @if (SessionService.GetLoggedUser() != null)
+    {
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+    }
 
     <main>
         <article class="content px-4">
@@ -13,3 +20,11 @@
         </article>
     </main>
 </div>
+
+@code {
+    
+    protected override void OnInitialized()
+    {
+        SessionService.GetLoggedUser();
+    }
+}

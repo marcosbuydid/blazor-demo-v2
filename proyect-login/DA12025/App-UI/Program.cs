@@ -10,6 +10,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<DBInMemory>();
 builder.Services.AddScoped<MovieService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<SessionService>();
 
 var app = builder.Build();
 

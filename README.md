@@ -11,3 +11,4 @@ Made for educational purposes only.
 - base-proyect contains a simple proyect to visualize all movie details, add a new movie, update or delete an existing one.
 - proyect-DTO is the base-proyect with the addition of DTOs objects.
 - proyect-tests contains a proyect with the unit tests of movie and movie service using MSTest.
+- proyect-login is the proyect-DTO with the addition of login functionality, visualize all users or adding new ones.

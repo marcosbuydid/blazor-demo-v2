@@ -1,7 +1,56 @@
 ﻿@page "/"
+@using Services
+@using Services.Models
+
+@inject SessionService SessionService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Index</PageTitle>
 
 <h1>Home Screen</h1>
 
 <p>This is a Movie App created with Blazor</p>
+
+@if (SessionService.GetLoggedUser() != null)
+{
+    <div>
+        <h3 class="mt-4">Welcome @SessionService.GetLoggedUser().Name @SessionService.GetLoggedUser().LastName</h3>
+
+        <div>
+            <label>Email:</label>
+            <label>@SessionService.GetLoggedUser().Email</label>
+        </div>
+
+        <div>
+            <label>Role:</label>
+            <label>@SessionService.GetLoggedUser().Role</label>
+        </div>
+
+        <div class="mt-4">
+            <button type="button" class="btn btn-secondary" @onclick="OnLogout">Logout</button>
+        </div>
+
+    </div>
+}
+else
+{
+    <div>
+        <NavLink class="nav-link" href="login" Match="NavLinkMatch.All">
+            <button type="button" class="btn btn-primary">Login</button>
+        </NavLink>
+    </div>
+}
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        SessionService.GetLoggedUser();
+    }
+
+    private void OnLogout()
+    {
+        SessionService.Logout();
+        NavigationManager.NavigateTo("/");
+    }
+}
