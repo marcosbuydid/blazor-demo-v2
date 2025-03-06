@@ -9,12 +9,14 @@ public class MovieServiceTests
 {
     private DBInMemory _dbInMemory;
     private MovieService _movieService;
-
+    private Movie movie;
+    
     [TestInitialize]
     public void Setup()
     {
         _dbInMemory = new DBInMemory();
         _movieService = new MovieService(_dbInMemory);
+        movie = new Movie("Sing Sing", "Greg Kwedar", new DateTime(2024, 07, 12), 2000000);
     }
 
 
@@ -23,8 +25,6 @@ public class MovieServiceTests
     public void AddNewMovie_WhenAddADuplicateMovie_ThenThrowException()
     {
         //arrange
-        Movie movie;
-        movie = new Movie("Sing Sing", "Greg Kwedar", new DateTime(2024, 07, 12), 2000000);
         //act
         _movieService.AddMovie(movie);
         _movieService.AddMovie(movie);
@@ -35,8 +35,6 @@ public class MovieServiceTests
     public void AddNewMovie_WhenAddMovie_ThenReturnSuccessfully()
     {
         //arrange
-        Movie movie;
-        movie = new Movie("Sing Sing", "Greg Kwedar", new DateTime(2024, 07, 12), 2000000);
         //act
         _movieService.AddMovie(movie);
         var retrievedMovie = _dbInMemory.Movies.Find(m => m.Title == movie.Title);
@@ -50,7 +48,6 @@ public class MovieServiceTests
     public void GetMovie_WhenGetAnUndefinedMovie_ThenThrowException()
     {
         //arrange
-        Movie movie;
         //act
         _movieService.GetMovie("Sing Sing");
         //assert
@@ -60,8 +57,6 @@ public class MovieServiceTests
     public void GetMovie_WhenGetAnExistentMovie_ThenReturnSuccessfully()
     {
         //arrange
-        Movie movie;
-        movie = new Movie("Sing Sing", "Greg Kwedar", new DateTime(2024, 07, 12), 2000000);
         _dbInMemory.Movies.Add(movie);
         //act
         var retrievedMovie = _movieService.GetMovie(movie.Title);
@@ -83,8 +78,6 @@ public class MovieServiceTests
     public void GetMovies_WhenGettingAllMovies_ThenReturnAllMovies()
     {
         //arrange
-        Movie movie;
-        movie = new Movie("Sing Sing", "Greg Kwedar", new DateTime(2024, 07, 12), 2000000);
         _dbInMemory.Movies.Add(movie);
         //act
         _movieService.GetMovies();
@@ -107,8 +100,6 @@ public class MovieServiceTests
     public void DeleteMovie_WhenDeleteAMovie_ThenReturnSuccessfully()
     {
         //arrange
-        Movie movie;
-        movie = new Movie("Sing Sing", "Greg Kwedar", new DateTime(2024, 07, 12), 2000000);
         _dbInMemory.Movies.Add(movie);
         //act
         _movieService.DeleteMovie(movie.Title);
@@ -120,8 +111,6 @@ public class MovieServiceTests
     public void UpdateMovie_WhenUpdateAMovie_ThenReturnSuccessfully()
     {
         //arrange
-        Movie movie;
-        movie = new Movie("Sing Sing", "Greg Kwedar", new DateTime(2024, 07, 12), 2000000);
         _dbInMemory.Movies.Add(movie);
         movie.Budget = 1000000;
         //act
