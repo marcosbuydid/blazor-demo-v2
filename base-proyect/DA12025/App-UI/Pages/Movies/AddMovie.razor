@@ -7,6 +7,14 @@
 
 <h1>Add Movie</h1>
 
+@if (alertVisible)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@alertMessage</strong>
+        <button type="button" class="btn-close" aria-label="Close" @onclick="ToggleAlertVisibility"></button>
+    </div>
+}
+
 <body>
     <EditForm Model="@movie" OnValidSubmit="OnSubmit">
         <DataAnnotationsValidator />
@@ -32,6 +40,8 @@
 
 @code {
     private Movie movie;
+    private bool alertVisible = false;
+    private string alertMessage = "";
 
     protected override void OnInitialized()
     {
@@ -40,12 +50,25 @@
 
     private void OnSubmit()
     {
-        MovieService.AddMovie(movie);
-        NavigationManager.NavigateTo("/movies");
+        try
+        {
+            MovieService.AddMovie(movie);
+            NavigationManager.NavigateTo("/movies");
+        }
+        catch (ArgumentException e)
+        {
+            alertVisible = true;
+            alertMessage = e.Message;
+        }
     }
 
     private void OnCancel()
     {
         NavigationManager.NavigateTo("/");
+    }
+
+    private void ToggleAlertVisibility()
+    {
+        alertVisible = !alertVisible;
     }
 }
