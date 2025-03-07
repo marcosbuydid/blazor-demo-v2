@@ -6,42 +6,42 @@ namespace Services;
 
 public class MovieService: IMovieService
 {
-    private readonly DBInMemory _dbInMemory;
+    private readonly InMemoryDatabase _inMemoryDatabase;
 
-    public MovieService(DBInMemory dbInMemory)
+    public MovieService(InMemoryDatabase inMemoryDatabase)
     {
-        _dbInMemory = dbInMemory;
+        _inMemoryDatabase = inMemoryDatabase;
     }
 
     public void AddMovie(Movie movie)
     {
         ValidateUniqueTitle(movie.Title);
 
-        _dbInMemory.Movies.Add(movie);
+        _inMemoryDatabase.Movies.Add(movie);
     }
 
     public void DeleteMovie(string title)
     {
         Movie movieToDelete = GetMovie(title);
-        _dbInMemory.Movies.Remove(movieToDelete);
+        _inMemoryDatabase.Movies.Remove(movieToDelete);
     }
 
     public List<Movie> GetMovies()
     {
-        return _dbInMemory.Movies;
+        return _inMemoryDatabase.Movies;
     }
 
     public void UpdateMovie(Movie movieToUpdate)
     {
-        Movie? movie = _dbInMemory.Movies.Find(m => m.Title == movieToUpdate.Title);
-        var movieToUpdateIndex = _dbInMemory.Movies.IndexOf(movie);
+        Movie? movie = _inMemoryDatabase.Movies.Find(m => m.Title == movieToUpdate.Title);
+        var movieToUpdateIndex = _inMemoryDatabase.Movies.IndexOf(movie);
 
-        _dbInMemory.Movies[movieToUpdateIndex] = movieToUpdate;
+        _inMemoryDatabase.Movies[movieToUpdateIndex] = movieToUpdate;
     }
 
     public Movie GetMovie(string title)
     {
-        Movie? movie = _dbInMemory.Movies.FirstOrDefault(movie => movie.Title == title);
+        Movie? movie = _inMemoryDatabase.Movies.FirstOrDefault(movie => movie.Title == title);
         if (movie == null)
         {
             throw new ArgumentException("Cannot find movie with this title");
@@ -51,7 +51,7 @@ public class MovieService: IMovieService
 
     private void ValidateUniqueTitle(String title)
     {
-        foreach (var movie in _dbInMemory.Movies)
+        foreach (var movie in _inMemoryDatabase.Movies)
         {
             if (movie.Title == title)
             {
