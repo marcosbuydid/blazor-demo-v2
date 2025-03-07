@@ -2,10 +2,24 @@
 {
     public class Movie
     {
+        private int? id;
         private string title;
         private string director;
         private DateTime releaseDate;
         private int budget;
+
+        public int? Id
+        {
+            get
+            {
+                return Id;
+            }
+
+            set
+            {
+                id = value;
+            }
+        }
 
         public string Title
         {
@@ -58,8 +72,11 @@
             }
         }
 
-        public Movie(string title, string director, DateTime releaseYear, int budget)
+        public Movie() { }
+
+        public Movie(int? id, string title, string director, DateTime releaseYear, int budget)
         {
+            Id = id;
             Title = title;
             Director = director;
             ReleaseDate = releaseYear;

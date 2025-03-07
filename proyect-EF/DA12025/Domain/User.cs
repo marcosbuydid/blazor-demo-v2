@@ -8,11 +8,25 @@ namespace Domain
 {
     public class User
     {
+        private int? id;
         private string name;
         private string lastname;
         private string email;
         private string password;
         private string role;
+
+        public int? Id
+        {
+            get
+            {
+                return Id;
+            }
+
+            set
+            {
+                id = value;
+            }
+        }
 
         public string Name
         {
@@ -94,8 +108,11 @@ namespace Domain
             }
         }
 
-        public User(string name, string lastname, string email, string password, string role)
+        public User() { }
+
+        public User(int? id, string name, string lastname, string email, string password, string role)
         {
+            Id = id;
             Name = name;
             LastName = lastname;
             Email = email;

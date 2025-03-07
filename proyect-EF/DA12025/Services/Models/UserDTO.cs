@@ -9,6 +9,7 @@ namespace Services.Models
 {
     public class UserDTO
     {
+        public int? Id { get; set; }
         [Required(ErrorMessage = "Name is required.")]
         public string Name {  get; set; }
         [Required(ErrorMessage = "LastName is required.")]

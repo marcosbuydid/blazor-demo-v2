@@ -12,23 +12,23 @@ namespace Services
 {
     public class UserService : IUserService
     {
-        private readonly InMemoryDatabase _inMemoryDatabase;
+        private readonly UserRepository _userRepository;
 
-        public UserService(InMemoryDatabase inMemoryDatabase)
+        public UserService(UserRepository userRepository)
         {
-            _inMemoryDatabase = inMemoryDatabase;
+            _userRepository = userRepository;
         }
         public void AddUser(UserDTO user)
         {
             ValidateUserEmail(user.Email);
-            _inMemoryDatabase.Users.Add(ToEntity(user));
+            _userRepository.Add(ToEntity(user));
         }
 
         public List<UserDTO> GetUsers()
         {
             List<UserDTO> usersDTO = new List<UserDTO>();
 
-            foreach (var user in _inMemoryDatabase.Users)
+            foreach (var user in _userRepository.GetAll())
             {
                 usersDTO.Add(FromEntity(user));
             }
@@ -38,13 +38,12 @@ namespace Services
         public void DeleteUser(string email)
         {
             UserDTO userToDelete = GetUser(email);
-            User? user = _inMemoryDatabase.Users.Find(u => u.Email == userToDelete.Email);
-            _inMemoryDatabase.Users.Remove(user);
+            _userRepository.Delete(ToEntity(userToDelete));
         }
 
         public UserDTO GetUser(string email)
         {
-            User? user = _inMemoryDatabase.Users.FirstOrDefault(user => user.Email == email);
+            User? user = _userRepository.Get(user => user.Email == email);
             if (user == null)
             {
                 throw new ArgumentException("Cannot find user with this email");
@@ -54,7 +53,7 @@ namespace Services
 
         private void ValidateUserEmail(string email)
         {
-            foreach (var user in _inMemoryDatabase.Users)
+            foreach (var user in _userRepository.GetAll())
             {
                 if (user.Email == email)
                 {
@@ -65,7 +64,7 @@ namespace Services
 
         private User ToEntity(UserDTO userDTO)
         {
-            return new User(userDTO.Name, userDTO.LastName, userDTO.Email, userDTO.Password, userDTO.Role) { };
+            return new User(userDTO.Id, userDTO.Name, userDTO.LastName, userDTO.Email, userDTO.Password, userDTO.Role) { };
         }
 
         private static UserDTO FromEntity(User user)

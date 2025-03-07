@@ -12,11 +12,11 @@ namespace Services
 {
     public class SessionService : ISessionService
     {
-        private readonly InMemoryDatabase _inMemoryDatabase;
+        private readonly UserRepository _userRepository;
 
-        public SessionService(InMemoryDatabase inMemoryDatabase)
+        public SessionService(UserRepository userRepository)
         {
-            _inMemoryDatabase = inMemoryDatabase;
+            _userRepository = userRepository;
         }
 
         public UserDTO GetLoggedUser()
@@ -26,7 +26,7 @@ namespace Services
 
         public void Login(string email, string password)
         {
-            User? user = _inMemoryDatabase.Users.FirstOrDefault(user => user.Email == email && user.Password == password);
+            User? user = _userRepository.Get(user => user.Email == email && user.Password == password);
             if (user == null)
             {
                 throw new ArgumentException("User or password is incorrect, try again");
