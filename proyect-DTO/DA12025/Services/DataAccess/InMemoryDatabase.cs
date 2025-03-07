@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Services.DataAccess
 {
-    public class DBInMemory
+    public class InMemoryDatabase
     {
         public List<Movie> Movies { get; set; }
 
-        public DBInMemory()
+        public InMemoryDatabase()
         {
             Movies = new List<Movie>();
             loadDefaultMovies();
