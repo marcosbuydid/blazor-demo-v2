@@ -13,32 +13,32 @@ namespace Services
 {
     public class MovieService : IMovieService
     {
-        private readonly DBInMemory _dbInMemory;
+        private readonly InMemoryDatabase _inMemoryDatabase;
 
-        public MovieService(DBInMemory dbInMemory)
+        public MovieService(InMemoryDatabase inMemoryDatabase)
         {
-            _dbInMemory = dbInMemory;
+            _inMemoryDatabase = inMemoryDatabase;
         }
 
         public void AddMovie(MovieDTO movie)
         {
             ValidateUniqueTitle(movie.Title);
 
-            _dbInMemory.Movies.Add(ToEntity(movie));
+            _inMemoryDatabase.Movies.Add(ToEntity(movie));
         }
 
         public void DeleteMovie(string title)
         {
             MovieDTO movieToDelete = GetMovie(title);
-            Movie? movie = _dbInMemory.Movies.Find(m => m.Title == movieToDelete.Title);
-            _dbInMemory.Movies.Remove(movie);
+            Movie? movie = _inMemoryDatabase.Movies.Find(m => m.Title == movieToDelete.Title);
+            _inMemoryDatabase.Movies.Remove(movie);
         }
 
         public List<MovieDTO> GetMovies()
         {
             List<MovieDTO> moviesDTO = new List<MovieDTO>();
 
-            foreach (var movie in _dbInMemory.Movies)
+            foreach (var movie in _inMemoryDatabase.Movies)
             {
                 moviesDTO.Add(FromEntity(movie));
             }
@@ -48,15 +48,15 @@ namespace Services
 
         public void UpdateMovie(MovieDTO movieToUpdate)
         {
-            Movie? movie = _dbInMemory.Movies.Find(m => m.Title == movieToUpdate.Title);
-            var movieToUpdateIndex = _dbInMemory.Movies.IndexOf(movie);
+            Movie? movie = _inMemoryDatabase.Movies.Find(m => m.Title == movieToUpdate.Title);
+            var movieToUpdateIndex = _inMemoryDatabase.Movies.IndexOf(movie);
 
-            _dbInMemory.Movies[movieToUpdateIndex] = ToEntity(movieToUpdate);
+            _inMemoryDatabase.Movies[movieToUpdateIndex] = ToEntity(movieToUpdate);
         }
 
         public MovieDTO GetMovie(string title)
         {
-            Movie? movie = _dbInMemory.Movies.FirstOrDefault(movie => movie.Title == title);
+            Movie? movie = _inMemoryDatabase.Movies.FirstOrDefault(movie => movie.Title == title);
             if (movie == null)
             {
                 throw new ArgumentException("Cannot find movie with this title");
@@ -66,7 +66,7 @@ namespace Services
 
         private void ValidateUniqueTitle(String title)
         {
-            foreach (var movie in _dbInMemory.Movies)
+            foreach (var movie in _inMemoryDatabase.Movies)
             {
                 if (movie.Title == title)
                 {

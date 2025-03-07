@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<DBInMemory>();
+builder.Services.AddSingleton<InMemoryDatabase>();
 builder.Services.AddScoped<MovieService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SessionService>();
