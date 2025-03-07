@@ -1,0 +1,39 @@
+﻿@page "/users"
+@using Services
+@using Services.Models
+
+@inject UserService UserService
+
+<h1>User List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>LastName</th>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    private List<UserDTO> users;
+
+    protected override void OnInitialized()
+    {
+        users = UserService.GetUsers();
+    }
+}
