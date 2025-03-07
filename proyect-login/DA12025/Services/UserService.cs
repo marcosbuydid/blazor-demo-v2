@@ -12,32 +12,39 @@ namespace Services
 {
     public class UserService : IUserService
     {
-        private readonly DBInMemory _dBInMemory;
+        private readonly InMemoryDatabase _inMemoryDatabase;
 
-        public UserService(DBInMemory dbInMemory)
+        public UserService(InMemoryDatabase inMemoryDatabase)
         {
-            _dBInMemory = dbInMemory;
+            _inMemoryDatabase = inMemoryDatabase;
         }
         public void AddUser(UserDTO user)
         {
             ValidateUserEmail(user.Email);
-            _dBInMemory.Users.Add(ToEntity(user));
+            _inMemoryDatabase.Users.Add(ToEntity(user));
         }
 
         public List<UserDTO> GetUsers()
         {
             List<UserDTO> usersDTO = new List<UserDTO>();
 
-            foreach (var user in _dBInMemory.Users)
+            foreach (var user in _inMemoryDatabase.Users)
             {
                 usersDTO.Add(FromEntity(user));
             }
             return usersDTO;
         }
 
+        public void DeleteUser(string email)
+        {
+            UserDTO userToDelete = GetUser(email);
+            User? user = _inMemoryDatabase.Users.Find(u => u.Email == userToDelete.Email);
+            _inMemoryDatabase.Users.Remove(user);
+        }
+
         public UserDTO GetUser(string email)
         {
-            User? user = _dBInMemory.Users.FirstOrDefault(user => user.Email == email);
+            User? user = _inMemoryDatabase.Users.FirstOrDefault(user => user.Email == email);
             if (user == null)
             {
                 throw new ArgumentException("Cannot find user with this email");
@@ -47,7 +54,7 @@ namespace Services
 
         private void ValidateUserEmail(string email)
         {
-            foreach (var user in _dBInMemory.Users)
+            foreach (var user in _inMemoryDatabase.Users)
             {
                 if (user.Email == email)
                 {
