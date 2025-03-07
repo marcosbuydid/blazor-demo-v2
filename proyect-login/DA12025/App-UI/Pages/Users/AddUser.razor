@@ -71,7 +71,7 @@
         try
         {
             UserService.AddUser(userDTO);
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/users");
         }
         catch (ArgumentException e)
         {

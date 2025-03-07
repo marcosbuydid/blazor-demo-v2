@@ -24,6 +24,17 @@ namespace Services
             _dBInMemory.Users.Add(ToEntity(user));
         }
 
+        public List<UserDTO> GetUsers()
+        {
+            List<UserDTO> usersDTO = new List<UserDTO>();
+
+            foreach (var user in _dBInMemory.Users)
+            {
+                usersDTO.Add(FromEntity(user));
+            }
+            return usersDTO;
+        }
+
         public UserDTO GetUser(string email)
         {
             User? user = _dBInMemory.Users.FirstOrDefault(user => user.Email == email);
