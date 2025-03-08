@@ -37,8 +37,8 @@ namespace Services
 
         public void DeleteUser(string email)
         {
-            UserDTO userToDelete = GetUser(email);
-            _userRepository.Delete(ToEntity(userToDelete));
+            User userToDelete = GetUserObject(email);
+            _userRepository.Delete(userToDelete);
         }
 
         public UserDTO GetUser(string email)
@@ -49,6 +49,16 @@ namespace Services
                 throw new ArgumentException("Cannot find user with this email");
             }
             return FromEntity(user);
+        }
+
+        private User GetUserObject(string email)
+        {
+            User? user = _userRepository.Get(user => user.Email == email);
+            if (user == null)
+            {
+                throw new ArgumentException("Cannot find user with this email");
+            }
+            return user;
         }
 
         private void ValidateUserEmail(string email)
