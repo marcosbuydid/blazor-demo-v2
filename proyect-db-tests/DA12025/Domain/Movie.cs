@@ -2,11 +2,24 @@
 {
     public class Movie
     {
+        private int? id;
         private string title;
         private string director;
         private DateTime releaseDate;
         private int budget;
 
+        public int? Id
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                id = value;
+            }
+        }
         public string Title
         {
             get
@@ -18,7 +31,7 @@
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("Title cannot be null or empty");
+                    throw new ArgumentException("Title cannot be null or empty");
                 }
                 title = value;
             }
@@ -34,7 +47,7 @@
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("Director cannot be null or empty");
+                    throw new ArgumentException("Director cannot be null or empty");
                 }
                 director = value;
             }
@@ -52,14 +65,17 @@
             {
                 if (value < 0)
                 {
-                    throw new ArgumentNullException("Budget of the movie must be a positive number");
+                    throw new ArgumentException("Budget of the movie must be a positive number");
                 }
                 budget = value;
             }
         }
 
-        public Movie(string title, string director, DateTime releaseYear, int budget)
+        public Movie() { }
+
+        public Movie(int? id, string title, string director, DateTime releaseYear, int budget)
         {
+            Id = id;
             Title = title;
             Director = director;
             ReleaseDate = releaseYear;
