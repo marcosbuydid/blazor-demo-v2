@@ -19,7 +19,7 @@ namespace Domain
         {
             get
             {
-                return Id;
+                return id;
             }
 
             set

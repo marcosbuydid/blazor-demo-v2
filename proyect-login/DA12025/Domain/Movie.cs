@@ -18,7 +18,7 @@
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("Title cannot be null or empty");
+                    throw new ArgumentException("Title cannot be null or empty");
                 }
                 title = value;
             }
@@ -34,7 +34,7 @@
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("Director cannot be null or empty");
+                    throw new ArgumentException("Director cannot be null or empty");
                 }
                 director = value;
             }
@@ -52,7 +52,7 @@
             {
                 if (value < 0)
                 {
-                    throw new ArgumentNullException("Budget of the movie must be a positive number");
+                    throw new ArgumentException("Budget of the movie must be a positive number");
                 }
                 budget = value;
             }
