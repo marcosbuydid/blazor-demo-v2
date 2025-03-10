@@ -13,4 +13,5 @@ Made for educational purposes only.
 - proyect-tests contains a proyect with the unit tests of movie and movie service using MSTest.
 - proyect-login is the proyect-DTO with the addition of login functionality, visualize all users or adding new ones.
 - proyect-EF is the proyect-login with the addition of entity framework to persist data on a database.
-- proyect-db-tests is the proyect-DTO with entity framework included and the unit tests of movie and movie database service
+- proyect-db-tests is the proyect-DTO with entity framework included and the unit tests of movie and movie database service.
+- proyect-hm contains a simple proyect with the three inheritance mapping types used in entity framework.
